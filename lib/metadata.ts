@@ -4,13 +4,13 @@ export const siteConfig = {
   name: "React Bits Pro - Agency Template",
   description:
     "We craft exceptional digital experiences that captivate audiences and drive results. From strategy to execution, we bring your vision to life.",
-  url: "https://pulsewave.design",
+  url: "https://OPCagt.design",
   ogImage: "/og-image.png",
-  creator: "@pulsewave",
+  creator: "@OPCagt",
   authors: [
     {
-      name: "Pulsewave Studio",
-      url: "https://pulsewave.design",
+      name: "OPCagt Studio",
+      url: "https://OPCagt.design",
     },
   ],
   keywords: [

@@ -2,30 +2,46 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { useLanguage } from "@/lib/language-context";
 import { useOverlay } from "@/lib/overlay-context";
 
-const sections = [
-  { id: "hero", label: "Home" },
-  { id: "projects", label: "Work" },
-  { id: "services", label: "Services" },
-  { id: "about", label: "About us" },
-  { id: "social-proof", label: "Testimonials" },
-  { id: "contact", label: "Contact" },
-];
+const sectionIds = ["hero", "projects", "services", "about", "social-proof", "contact"] as const;
+type SectionId = (typeof sectionIds)[number];
 
-const menuItems = [
-  { label: "Home", href: "#" },
-  { label: "Work", href: "#projects" },
-  { label: "Services", href: "#services-menu" },
-  { label: "About us", href: "#about" },
-  { label: "Testimonials", href: "#social-proof" },
-  { label: "Contact", href: "#contact" },
-];
+function getSectionLabel(sectionId: SectionId, lang: "en" | "zh"): string {
+  const labels =
+    lang === "zh"
+      ? {
+          hero: "首页",
+          projects: "案例",
+          services: "服务",
+          about: "关于我们",
+          "social-proof": "用户评价",
+          contact: "联系",
+        }
+      : {
+          hero: "Home",
+          projects: "Work",
+          services: "Services",
+          about: "About us",
+          "social-proof": "Testimonials",
+          contact: "Contact",
+        };
+
+  return labels[sectionId];
+}
+
+function getSectionHref(sectionId: SectionId): string {
+  if (sectionId === "hero") return "#";
+  if (sectionId === "services") return "#services-menu";
+  return `#${sectionId}`;
+}
 
 export function Header() {
-  const [activeSection, setActiveSection] = useState("Home");
+  const [activeSection, setActiveSection] = useState<SectionId>("hero");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const { lang } = useLanguage();
   const { isOverlayOpen } = useOverlay();
 
   useEffect(() => {
@@ -41,25 +57,24 @@ export function Header() {
       
       const isNearBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 100;
       if (isNearBottom) {
-        setActiveSection("Contact");
+        setActiveSection("contact");
         return;
       }
 
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
-        if (!section) continue;
-        if (section.id === "contact") continue;
-        const element = document.querySelector(`.${section.id}`) || document.getElementById(section.id);
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const sectionId = sectionIds[i];
+        if (!sectionId || sectionId === "contact") continue;
+        const element = document.querySelector(`.${sectionId}`) || document.getElementById(sectionId);
         if (element) {
           const { offsetTop } = element as HTMLElement;
           if (scrollPosition >= offsetTop) {
-            setActiveSection(section.label);
+            setActiveSection(sectionId);
             return;
           }
         }
       }
-      if (sections[0]) {
-        setActiveSection(sections[0].label);
+      if (sectionIds[0]) {
+        setActiveSection(sectionIds[0]);
       }
     };
 
@@ -95,7 +110,7 @@ export function Header() {
             width={120}
             height={20}
           /> */}
-          pulsewave
+          OPCagt
         </motion.a>
 
         <div className="relative h-12 sm:h-16">
@@ -117,7 +132,7 @@ export function Header() {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="flex h-12 sm:h-16 w-full items-center justify-between gap-4 px-4 sm:px-5 text-white"
             >
-              <span className="text-base sm:text-lg font-medium">{activeSection}</span>
+              <span className="text-base sm:text-lg font-medium">{getSectionLabel(activeSection, lang)}</span>
               <motion.div
                 className="relative h-5 w-5 sm:h-6 sm:w-6"
                 animate={{ rotate: isMenuOpen ? 45 : 0 }}
@@ -138,9 +153,9 @@ export function Header() {
                 transition={{ duration: 0.2, delay: 0.1 }}
               >
                 <ul className="flex flex-col gap-1">
-                  {menuItems.map((item, index) => (
+                  {sectionIds.map((sectionId, index) => (
                     <motion.li
-                      key={item.label}
+                      key={sectionId}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -10 }}
@@ -151,18 +166,18 @@ export function Header() {
                       }}
                     >
                       <a
-                        href={item.href}
+                        href={getSectionHref(sectionId)}
                         onClick={() => {
                           setIsMenuOpen(false);
-                          setActiveSection(item.label);
+                          setActiveSection(sectionId);
                         }}
                         className={`block py-1.5 text-lg font-medium transition-colors hover:text-white ${
-                          activeSection === item.label 
+                          activeSection === sectionId
                             ? "text-white underline underline-offset-4" 
                             : "text-white/60"
                         }`}
                       >
-                        {item.label}
+                        {getSectionLabel(sectionId, lang)}
                       </a>
                     </motion.li>
                   ))}

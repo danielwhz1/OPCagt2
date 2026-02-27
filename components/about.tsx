@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/lib/language-context";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
@@ -11,6 +12,7 @@ if (typeof window !== "undefined") {
 }
 
 export function About() {
+  const { lang } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -88,7 +90,15 @@ export function About() {
         </div>
 
         <h2 ref={headingRef} className="text-[clamp(1.75rem,4vw,3rem)] font-medium leading-[1.2] tracking-tight text-center mx-auto text-foreground max-w-4xl">
-          At Pulsewave, we transform bold ideas into immersive digital experiences through good design and relentless creativity.
+          {lang === "zh" ? (
+            <>
+              在 OPCagt，我们将大胆想法转化为沉浸式数字体验，
+              <br />
+              以优秀设计与持续创造力推动结果。
+            </>
+          ) : (
+            "At OPCagt, we transform bold ideas into immersive digital experiences through good design and relentless creativity."
+          )}
         </h2>
 
         <Link
@@ -96,7 +106,7 @@ export function About() {
           href="#contact"
           className="inline-flex items-center justify-center mt-8 px-6 py-3 rounded-full bg-foreground text-background text-lg tracking-tight font-medium transition-opacity hover:opacity-80"
         >
-          More about us
+          {lang === "zh" ? "了解更多" : "More about us"}
         </Link>
       </div>
     </section>

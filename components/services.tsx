@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/lib/language-context";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -27,12 +28,38 @@ function SplitText({ children }: { children: string }) {
   );
 }
 
-const services = [
-  { id: 1, title: "Digital Experiences" },
-  { id: 2, title: "Brand Identity" },
-  { id: 3, title: "Creative Direction" },
-  { id: 4, title: "Product Design" },
-];
+function AnimatedZhLine({ text }: { text: string }) {
+  return (
+    <span className="inline-block whitespace-nowrap">
+      {Array.from(text).map((char, i) => {
+        const isAgentWord = text === "我们打造能交付结果的智能体，" && i >= 10 && i <= 12;
+        return (
+          <span
+            key={`${char}-${i}`}
+            className={`char inline-block ${isAgentWord ? "font-bold bg-gradient-to-r from-purple-700 via-indigo-700 to-blue-700 bg-clip-text text-transparent" : ""}`}
+          >
+            {char}
+          </span>
+        );
+      })}
+    </span>
+  );
+}
+
+const services = {
+  en: [
+    { id: 1, title: "Digital Experiences" },
+    { id: 2, title: "Brand Identity" },
+    { id: 3, title: "Creative Direction" },
+    { id: 4, title: "Product Design" },
+  ],
+  zh: [
+    { id: 1, title: "数字体验" },
+    { id: 2, title: "品牌识别" },
+    { id: 3, title: "创意方向" },
+    { id: 4, title: "产品设计" },
+  ],
+};
 
 function ServiceItem({ title, index }: { title: string; index: number }) {
   const itemRef = useRef<HTMLDivElement>(null);
@@ -203,6 +230,7 @@ export function Services() {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const { lang } = useLanguage();
 
   useEffect(() => {
     if (!titleRef.current || !sectionRef.current || !contentRef.current) return;
@@ -212,7 +240,7 @@ export function Services() {
     const section = sectionRef.current;
     const content = contentRef.current;
 
-    gsap.fromTo(
+    const titleTween = gsap.fromTo(
       chars,
       {
         willChange: "transform",
@@ -236,9 +264,10 @@ export function Services() {
     );
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      titleTween.scrollTrigger?.kill();
+      titleTween.kill();
     };
-  }, []);
+  }, [lang]);
 
   return (
     <section
@@ -254,13 +283,21 @@ export function Services() {
           ref={titleRef}
           className="text-center text-[clamp(2.5rem,7vw,7rem)] font-medium leading-[1.1] tracking-tight text-foreground max-w-350"
         >
-          <SplitText>We craft experiences that captivate. Brands that endure.</SplitText>
+          {lang === "zh" ? (
+            <>
+              <AnimatedZhLine text="我们打造能交付结果的智能体，" />
+              <br />
+              <AnimatedZhLine text="一人公司也能规模化增长。" />
+            </>
+          ) : (
+            <SplitText>We craft agents that deliver. One-person companies that scale.</SplitText>
+          )}
         </h2>
       </div>
 
       <div id="services-menu" className="w-full pb-24">
         <div className="w-full">
-          {services.map((service, index) => (
+          {services[lang].map((service, index) => (
             <ServiceItem key={service.id} title={service.title} index={index} />
           ))}
           <div className="border-t border-foreground/10" />

@@ -8,12 +8,12 @@
  */
 
 export const siteConfig = {
-  name: "Pulsewave",
+  name: "OPCagt",
   tagline: "Built to evolve ideas.",
   description:
     "We craft exceptional digital experiences that captivate audiences and drive results. From strategy to execution, we bring your vision to life.",
-  url: "https://pulsewave.studio",
-  twitter: "@pulsewave",
+  url: "https://OPCagt.studio",
+  twitter: "@OPCagt",
 
   nav: {
     cta: {

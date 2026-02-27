@@ -1,6 +1,7 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useLanguage } from "@/lib/language-context";
 import { motion } from "motion/react";
 import { useTheme } from "next-themes";
 import { useEffect, useMemo, useRef } from "react";
@@ -266,6 +267,38 @@ const defaultEndColors = {
 export function Hero({ startColors, endColors }: HeroProps = {}) {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
+  const { lang, setLang } = useLanguage();
+
+  const copy =
+    lang === "en"
+      ? {
+          headlineLine1: "The Agent OS for OPCs",
+          headlineLine2: "(One-Person Companies)",
+          subheadline:
+            "Build controlled agent workflows that turn your daily work into repeatable playbooks-track every step, approve the critical ones, and deliver outcomes faster.",
+          valueProps: [
+            "Controlled by design - approvals, permissions, and guardrails built-in",
+            "Playbooks, not prompts - reusable workflows you can run anytime",
+            "Traceable outcomes - logs, artifacts, and measurable results",
+          ],
+          primaryCta: "Get Started / Try the Demo",
+          secondaryCta: "View Playbooks / How it Works",
+          scroll: "Scroll",
+        }
+      : {
+          headlineLine1: "面向 OPC 的",
+          headlineLine2: "智能体操作系统",
+          subheadline:
+            "把日常工作编排成可控的智能体工作流，沉淀为可复用 Playbook；关键节点人工确认，全程可追踪交付。",
+          valueProps: [
+            "可控（权限 / 确认 / 护栏）",
+            "可复用（Playbook 模板）",
+            "可追踪（日志 / 产出 / 指标）",
+          ],
+          primaryCta: "立即开始",
+          secondaryCta: "查看模板库",
+          scroll: "下滑",
+        };
 
   const mergedStartColors = {
     color1: startColors?.color1 ?? defaultStartColors.color1,
@@ -302,6 +335,23 @@ export function Hero({ startColors, endColors }: HeroProps = {}) {
       </div>
 
       <div className="relative z-10 mx-auto flex h-full max-w-360 flex-col justify-start pt-44 px-6 text-left sm:px-12 sm:pt-48 md:justify-center md:pt-0 lg:px-24 2xl:max-w-450 3xl:max-w-550" style={{ perspective: "1200px" }}>
+        <div className="mb-6 inline-flex w-fit items-center gap-1 rounded-full border border-foreground/20 bg-background/60 p-1 backdrop-blur">
+          <button
+            type="button"
+            onClick={() => setLang("en")}
+            className={`rounded-full px-3 py-1 text-sm transition-colors ${lang === "en" ? "bg-foreground text-background" : "text-foreground/80 hover:text-foreground"}`}
+          >
+            EN
+          </button>
+          <button
+            type="button"
+            onClick={() => setLang("zh")}
+            className={`rounded-full px-3 py-1 text-sm transition-colors ${lang === "zh" ? "bg-foreground text-background" : "text-foreground/80 hover:text-foreground"}`}
+          >
+            中文
+          </button>
+        </div>
+
         <h1 className="text-[clamp(3rem,8vw,12rem)] leading-[1.05] tracking-tight text-foreground">
           <span className="block overflow-hidden pb-[0.1em]">
             <motion.span
@@ -311,7 +361,7 @@ export function Hero({ startColors, endColors }: HeroProps = {}) {
               transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
               style={{ transformOrigin: "center bottom", transformStyle: "preserve-3d" }}
             >
-              Crafting digital
+              {copy.headlineLine1}
             </motion.span>
           </span>
           <span className="block overflow-hidden pb-[0.1em]">
@@ -322,18 +372,7 @@ export function Hero({ startColors, endColors }: HeroProps = {}) {
               transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
               style={{ transformOrigin: "center bottom", transformStyle: "preserve-3d" }}
             >
-              experiences that
-            </motion.span>
-          </span>
-          <span className="block overflow-hidden pb-[0.1em]">
-            <motion.span
-              className="block"
-              initial={{ y: "120%", rotateX: -90, z: -200, opacity: 0 }}
-              animate={{ y: 0, rotateX: 0, z: 0, opacity: 1 }}
-              transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1], delay: 0.7 }}
-              style={{ transformOrigin: "center bottom", transformStyle: "preserve-3d" }}
-            >
-              <em className="font-serif">inspire & convert.</em>
+              <em className="font-serif">{copy.headlineLine2}</em>
             </motion.span>
           </span>
         </h1>
@@ -344,9 +383,41 @@ export function Hero({ startColors, endColors }: HeroProps = {}) {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, ease: [0.25, 1, 0.5, 1], delay: 1.2 }}
         >
-          A creative agency specializing in brand strategy, web design, and
-          development — building truly memorable products that convert.
+          {copy.subheadline}
         </motion.p>
+
+        <motion.ul
+          className="mt-6 flex max-w-4xl flex-wrap gap-3 text-sm text-foreground/75 sm:text-base"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1, ease: [0.25, 1, 0.5, 1], delay: 1.35 }}
+        >
+          {copy.valueProps.map((item) => (
+            <li key={item} className="rounded-full border border-foreground/15 bg-background/60 px-4 py-2 backdrop-blur">
+              {item}
+            </li>
+          ))}
+        </motion.ul>
+
+        <motion.div
+          className="mt-8 flex flex-wrap items-center gap-3"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1, ease: [0.25, 1, 0.5, 1], delay: 1.5 }}
+        >
+          <a
+            href="#contact"
+            className="inline-flex items-center justify-center rounded-full bg-foreground px-6 py-3 text-base font-medium text-background transition-opacity hover:opacity-80"
+          >
+            {copy.primaryCta}
+          </a>
+          <a
+            href="#services"
+            className="inline-flex items-center justify-center rounded-full border border-foreground/25 bg-background/60 px-6 py-3 text-base font-medium text-foreground transition-colors hover:border-foreground/45"
+          >
+            {copy.secondaryCta}
+          </a>
+        </motion.div>
       </div>
 
       <motion.div
@@ -356,7 +427,7 @@ export function Hero({ startColors, endColors }: HeroProps = {}) {
         transition={{ duration: 1.2, delay: 2 }}
       >
         <span className="text-lg tracking-tight font-medium text-foreground/80">
-          Scroll
+          {copy.scroll}
         </span>
       </motion.div>
     </section>

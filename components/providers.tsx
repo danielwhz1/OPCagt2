@@ -1,6 +1,7 @@
 "use client";
 
 import { SmoothScroll } from "@/components/smooth-scroll";
+import { LanguageProvider } from "@/lib/language-context";
 import { ReducedMotionProvider } from "@/lib/motion";
 import { OverlayProvider } from "@/lib/overlay-context";
 import { ThemeProvider } from "next-themes";
@@ -14,11 +15,13 @@ export function Providers({ children }: { children: ReactNode }): ReactNode {
       enableSystem
       disableTransitionOnChange
     >
-      <ReducedMotionProvider>
-        <OverlayProvider>
-          <SmoothScroll>{children}</SmoothScroll>
-        </OverlayProvider>
-      </ReducedMotionProvider>
+      <LanguageProvider>
+        <ReducedMotionProvider>
+          <OverlayProvider>
+            <SmoothScroll>{children}</SmoothScroll>
+          </OverlayProvider>
+        </ReducedMotionProvider>
+      </LanguageProvider>
     </ThemeProvider>
   );
 }

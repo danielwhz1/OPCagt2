@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/lib/language-context";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
@@ -37,6 +38,8 @@ function QuoteIcon({ className }: { className?: string }) {
 }
 
 export function SocialProof() {
+  const { lang } = useLanguage();
+  const isZh = lang === "zh";
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -94,13 +97,13 @@ export function SocialProof() {
       <div className="px-6 sm:px-12 lg:px-24 max-w-360 2xl:max-w-450 3xl:max-w-550 mx-auto">
         <div ref={headerRef} className="flex items-center justify-between mb-12 lg:mb-16">
           <h2 className="text-3xl lg:text-4xl font-medium tracking-tight text-foreground">
-            Trusted by industry leaders
+            {isZh ? "深受行业领先团队信赖" : "Trusted by industry leaders"}
           </h2>
           <Link
             href="#contact"
             className="hidden sm:inline-flex items-center justify-center px-6 py-3 rounded-full bg-foreground text-background text-sm font-medium transition-opacity hover:opacity-80"
           >
-            Work with us
+            {isZh ? "与我们合作" : "Work with us"}
           </Link>
         </div>
 
@@ -128,7 +131,9 @@ export function SocialProof() {
             <div>
               <QuoteIcon className="w-10 h-10 text-foreground/20 mb-6" />
               <blockquote className="text-2xl lg:text-3xl font-medium leading-snug text-foreground">
-                Pulsewave&apos;s design work output is superb, they could transform our input into dev-ready designs.
+                {isZh
+                  ? "OPCagt 的设计交付非常出色，能把我们的输入快速转成可直接开发落地的方案。"
+                  : "OPCagt&apos;s design work output is superb, they could transform our input into dev-ready designs."}
               </blockquote>
               <div className="mt-6">
                 <p className="font-semibold text-foreground">Alex Chen</p>
@@ -149,7 +154,7 @@ export function SocialProof() {
           <div className="bg-muted/50 rounded-2xl p-6 flex flex-col">
             <div className="flex-1">
               <p className="text-3xl font-semibold text-foreground">3x Faster</p>
-              <p className="text-sm text-foreground/60 mt-1">Time to Market Launch</p>
+              <p className="text-sm text-foreground/60 mt-1">{isZh ? "上线速度提升" : "Time to Market Launch"}</p>
             </div>
             <div className="flex items-center justify-between mt-auto pt-4">
               <span className="text-sm font-medium text-foreground">novahq</span>
@@ -165,7 +170,7 @@ export function SocialProof() {
           <div className="bg-muted/50 rounded-2xl p-6 flex flex-col">
             <div className="flex-1">
               <p className="text-3xl font-semibold text-foreground">+280%</p>
-              <p className="text-sm text-foreground/60 mt-1">Increase in Engagement</p>
+              <p className="text-sm text-foreground/60 mt-1">{isZh ? "互动率增长" : "Increase in Engagement"}</p>
             </div>
             <div className="flex items-center justify-between mt-auto pt-4">
               <span className="text-sm font-medium text-foreground">arclight</span>
@@ -182,17 +187,30 @@ export function SocialProof() {
             <div className="flex-1">
               <p className="text-3xl lg:text-4xl font-semibold text-foreground">Top 1%</p>
               <p className="text-foreground/60 mt-2">
-                Digital Experience<br />& Product Studios
+                {isZh ? (
+                  <>
+                    数字体验与产品工作室
+                    <br />
+                    头部 1%
+                  </>
+                ) : (
+                  <>
+                    Digital Experience
+                    <br />& Product Studios
+                  </>
+                )}
               </p>
             </div>
             <div className="mt-auto pt-6">
-              <p className="text-sm font-medium text-foreground">5.0 Rated On Trustpilot</p>
+              <p className="text-sm font-medium text-foreground">{isZh ? "Trustpilot 评分 5.0" : "5.0 Rated On Trustpilot"}</p>
             </div>
           </div>
 
           <div className="lg:col-span-3 bg-muted/50 rounded-2xl p-8 flex flex-col">
             <p className="text-xl lg:text-2xl font-medium leading-relaxed text-foreground max-w-3xl flex-1">
-              We helped Meridian rebrand and launch their new platform, resulting in 12M+ users within the first quarter.
+              {isZh
+                ? "我们帮助 Meridian 完成品牌重塑并上线新平台，在首个季度即获得 1200 万+ 用户。"
+                : "We helped Meridian rebrand and launch their new platform, resulting in 12M+ users within the first quarter."}
             </p>
             <div className="flex items-center justify-between mt-auto pt-6">
               <span className="text-xl font-semibold text-foreground">Meridian</span>

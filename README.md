@@ -109,7 +109,7 @@ Update branding in `lib/config.ts`:
 
 ```typescript
 export const siteConfig = {
-  name: "Pulsewave",
+  name: "OPCagt",
   tagline: "Built to evolve ideas.",
   description: "Your agency description...",
   url: "https://yoursite.com",
