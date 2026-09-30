@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import { Providers } from "@/components/providers";
 import { SkipToContent } from "@/components/skip-to-content";
 import { baseMetadata } from "@/lib/metadata";
@@ -44,6 +45,7 @@ export default function RootLayout({
           <SkipToContent />
           {children}
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
